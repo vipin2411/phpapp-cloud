@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webserver
+  labels:
+    app: apacheweb
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: apacheweb
+  template:
+    metadata:
+      labels:
+        app: apacheweb
+    spec:
+      containers:
+      - name: php-apacheweb
+        image: vipin2411/php:7.2-apache-mysqli
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: gitgallary
+          mountPath: /var/www/html
+          subPath: gallary
+      volumes:
+        - name: gitgallary
+          gitRepo:
+            repository: https://github.com/vipin2411/gallary.git
+
